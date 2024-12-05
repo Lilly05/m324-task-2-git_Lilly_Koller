@@ -1,0 +1,31 @@
+name: Convert Markdown to HTML
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Make convert.sh executable
+        run: chmod +x convert.sh
+
+      - name: Run conversion script
+        run: ./convert.sh
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add index.html
+          git commit -m "Update index.html (via GitHub Actions)" || echo "No changes to commit"
+          git push
