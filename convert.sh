@@ -24,8 +24,12 @@ convert_to_html() {
 }
 
 # Überprüfung, ob eine Aktualisierung notwendig ist
-if [ ! -f "$OUTPUT_FILE" ] || [ "$INPUT_FILE" -nt "$OUTPUT_FILE" ]; then
+#!/bin/bash
+
+# Überprüfen, ob README.md neuer ist als index.html
+if [ README.md -nt index.html ]; then
+    echo "README.md wurde geändert, konvertiere in index.html"
     convert_to_html
 else
-    echo "$OUTPUT_FILE ist bereits aktuell."
+    echo "index.html ist bereits aktuell."
 fi
